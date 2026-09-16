@@ -1,4 +1,4 @@
-name: Validate Flask app
+name: Validate and Deploy Flask app
 
 on:
   push:
@@ -23,3 +23,12 @@ jobs:
 
       - name: Check Flask import
         run: python -c "from app import app; print(app.url_map)"
+
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
