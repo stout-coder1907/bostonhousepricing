@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boston House Pricing | Property Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #18211f; --muted: #6c7772; --paper: #f5f7f2; --line: #dfe5df; --coral: #e7775f; --sage: #dce9df; --white: #fff3; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: "DM Sans", sans-serif; }
+    body::before { content: ""; position: fixed; inset: 0 0 auto; height: 7px; background: var(--coral); z-index: 4; }
+    .page { max-width: 1240px; margin: 0 auto; padding: 48px 38px 70px; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 58px; }
+    .brand { display: flex; gap: 12px; align-items: center; font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; color: #fff; background: var(--ink); font-family: Georgia, serif; font-size: 20px; }
+    .location { color: var(--muted); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+    .intro { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 80px; align-items: end; margin-bottom: 52px; }
+    .eyebrow { color: var(--coral); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { max-width: 720px; margin: 14px 0 18px; font-family: Fraunces, Georgia, serif; font-size: clamp(46px, 6vw, 82px); font-weight: 600; letter-spacing: -.045em; line-height: .98; }
+    .intro-copy { max-width: 540px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
+    .hero-art { min-height: 218px; padding: 24px; display: flex; align-items: end; color: #fff; background: linear-gradient(145deg, rgba(20, 36, 31, .1), rgba(20, 36, 31, .75)), url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&q=85") center/cover; }
+    .hero-art span { font-family: Fraunces, Georgia, serif; font-size: 24px; line-height: 1.1; }
+    .workspace { display: grid; grid-template-columns: 1fr 310px; gap: 28px; align-items: start; }
+    .form-panel { padding: 34px; background: #fff; border: 1px solid var(--line); }
+    .panel-heading { display: flex; justify-content: space-between; gap: 18px; align-items: start; margin-bottom: 30px; }
+    h2 { margin: 0; font-family: Fraunces, Georgia, serif; font-size: 30px; font-weight: 600; }
+    .step { color: var(--coral); font-size: 12px; font-weight: 700; letter-spacing: .1em; white-space: nowrap; }
+    .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 18px; }
+    label { display: block; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+    .label-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .hint { color: #a0aaa4; font-size: 10px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+    input { width: 100%; padding: 14px 13px; color: var(--ink); background: #fbfcfa; border: 1px solid var(--line); border-radius: 0; font: inherit; font-size: 15px; outline: none; transition: border-color .2s, box-shadow .2s; }
+    input:focus { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(231, 119, 95, .14); }
+    .form-footer { display: flex; justify-content: space-between; gap: 22px; align-items: center; margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .form-footer small { max-width: 340px; color: var(--muted); line-height: 1.5; }
+    button { padding: 15px 22px; color: #fff; background: var(--coral); border: 0; border-radius: 0; cursor: pointer; font: inherit; font-weight: 700; transition: background .2s, transform .2s; }
+    button:hover { background: #cf604b; transform: translateY(-2px); }
+    .side-panel { padding: 28px; background: var(--sage); }
+    .side-panel h3 { margin: 0 0 14px; font-family: Fraunces, Georgia, serif; font-size: 26px; font-weight: 600; }
+    .side-panel p { margin: 0 0 26px; color: #5d6c62; font-size: 14px; line-height: 1.6; }
+    .metric { padding: 18px 0; border-top: 1px solid rgba(24, 33, 31, .16); }
+    .metric strong { display: block; margin-bottom: 5px; font-family: Fraunces, Georgia, serif; font-size: 30px; font-weight: 600; }
+    .metric span { color: #5d6c62; font-size: 12px; }
+    .result { margin-top: 22px; padding: 23px; background: var(--ink); color: #fff; animation: rise .45s ease both; }
+    .result-label { color: #a8c4b0; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .result-value { display: block; margin-top: 9px; color: #fff3d8; font-family: Fraunces, Georgia, serif; font-size: 25px; line-height: 1.25; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) { .intro { grid-template-columns: 1fr; gap: 28px; } .hero-art { min-height: 180px; } .workspace { grid-template-columns: 1fr; } .side-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; } .side-panel p { margin-bottom: 0; } }
+    @media (max-width: 620px) { .page { padding: 34px 18px 48px; } header { margin-bottom: 42px; } .location { display: none; } h1 { font-size: 49px; } .form-panel { padding: 22px 18px; } .fields { grid-template-columns: repeat(2, 1fr); gap: 18px 12px; } .form-footer { display: block; } .form-footer small { display: block; margin-bottom: 18px; } button { width: 100%; } .side-panel { display: block; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="brand"><span class="brand-mark">B</span><span>Property Lab</span></div>
+      <div class="location">Boston, Massachusetts · Est. 2024</div>
+    </header>
+    <section class="intro">
+      <div>
+        <div class="eyebrow">Data-led home valuation</div>
+        <h1>Find the value in every address.</h1>
+        <p class="intro-copy">Explore a considered estimate for a Boston property using neighborhood signals, home characteristics, and a trained linear regression model.</p>
+      </div>
+      <div class="hero-art"><span>Good homes<br>start with good data.</span></div>
+    </section>
+    <section class="workspace">
+      <div class="form-panel">
+        <div class="panel-heading"><h2>Tell us about the property</h2><span class="step">01 / 01</span></div>
+        <form action="{{ url_for('predict')}}" method="post">
+          <div class="fields">
+            <label><span class="label-row"><span>Crime rate</span><span class="hint">CRIM</span></span><input type="number" name="CRIM" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Residential land</span><span class="hint">ZN %</span></span><input type="number" name="ZN" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Non-retail business</span><span class="hint">INDUS %</span></span><input type="number" name="INDUS" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Charles River</span><span class="hint">CHAS 0 / 1</span></span><input type="number" name="CHAS" min="0" max="1" step="1" placeholder="0" required></label>
+            <label><span class="label-row"><span>Air quality</span><span class="hint">NOX</span></span><input type="number" name="NOX" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Rooms per home</span><span class="hint">RM</span></span><input type="number" name="RM" step="any" placeholder="6.00" required></label>
+            <label><span class="label-row"><span>Home age</span><span class="hint">AGE %</span></span><input type="number" name="Age" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Distance to jobs</span><span class="hint">DIS</span></span><input type="number" name="DIS" step="any" placeholder="0.00" required></label>
+            <label><span class="label-row"><span>Highway access</span><span class="hint">RAD</span></span><input type="number" name="RAD" step="any" placeholder="0" required></label>
+            <label><span class="label-row"><span>Property tax</span><span class="hint">TAX</span></span><input type="number" name="TAX" step="any" placeholder="300" required></label>
+            <label><span class="label-row"><span>Pupil-teacher ratio</span><span class="hint">PTRATIO</span></span><input type="number" name="PTRATIO" step="any" placeholder="18.00" required></label>
+            <label><span class="label-row"><span>Community index</span><span class="hint">B</span></span><input type="number" name="B" step="any" placeholder="390.00" required></label>
+            <label><span class="label-row"><span>Lower-status population</span><span class="hint">LSTAT %</span></span><input type="number" name="LSTAT" step="any" placeholder="12.00" required></label>
+          </div>
+          <div class="form-footer"><small>Enter the neighborhood and property indicators, then let the model do the math.</small><button type="submit">Estimate value <span aria-hidden="true">→</span></button></div>
+        </form>
+      </div>
+      <aside class="side-panel">
+        <div><h3>A clearer view of the market.</h3><p>One quiet moment with the numbers can make a property feel easier to understand.</p></div>
+        <div class="metric"><strong>13</strong><span>signals considered</span></div>
+        <div class="metric"><strong>1978</strong><span>Boston homes in the source dataset</span></div>
+        {% if prediction_text %}<div class="result"><span class="result-label">Your estimate</span><strong class="result-value">{{ prediction_text }}</strong></div>{% endif %}
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
