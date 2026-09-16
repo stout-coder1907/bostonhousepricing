@@ -12,3 +12,6 @@ Create a new environment
 ```
 conda create -p venv python==3.7 -y
 ```
+
+deployed on:
+https://bostonhousepricing-l6al.onrender.com
